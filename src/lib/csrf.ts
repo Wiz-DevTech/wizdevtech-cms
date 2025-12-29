@@ -46,8 +46,6 @@ export function validateCSRFToken(sessionId: string, token: string): boolean {
 }
 
 // --- FIX 1: Add `async` and change return type ---
-// An async function must return a Promise. The original function returned `string | null`,
-// so the new return type is `Promise<string | null>`.
 export async function getCSRFTokenFromRequest(request: NextRequest): Promise<string | null> {
   // Check header first
   const headerToken = request.headers.get("x-csrf-token");
@@ -94,8 +92,6 @@ export function withCSRFProtection(
     // For state-changing requests, validate CSRF token
     if (["POST", "PUT", "DELETE", "PATCH"].includes(request.method)) {
       // --- FIX 2: Add `await` to the function call ---
-      // Since getCSRFTokenFromRequest is now async, we must `await` it
-      // to get the actual string value instead of a Promise object.
       const csrfToken = await getCSRFTokenFromRequest(request);
 
       if (!csrfToken) {
