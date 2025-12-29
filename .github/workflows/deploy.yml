@@ -31,18 +31,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "20"
+          bun-version: latest
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
-        # Using npm for broad compatibility. Change to 'bun install' if you prefer.
-        run: npm install
+        # This command now uses Bun and your bun.lockb file
+        run: bun install --frozen-lockfile
       - name: Build with Next.js
-        # This command runs the build process which creates the static files in the /out directory
-        run: npm run build
+        # This command now uses Bun to run the build script
+        run: bun run build
       - name: Static HTML export with Next.js
         # This action correctly packages the static files for GitHub Pages
         uses: actions/upload-pages-artifact@v3
