@@ -1,8 +1,12 @@
+// next.config.ts
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  /* config options here */
+  // This is the crucial change for static export to GitHub Pages
+  output: "export",
+
+  // Keep your existing configurations
   typescript: {
     ignoreBuildErrors: true,
   },
