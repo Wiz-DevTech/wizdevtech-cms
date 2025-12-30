@@ -8,14 +8,10 @@ on:
       - main
   workflow_dispatch:
 
-# Sets permissions for the GitHub token to deploy to Cloudflare
-permissions:
-  contents: read
-  deployments: write
-
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Pages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,35 +24,16 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Build with Next.js
+        run: bun run build
+
       - name: Build for Cloudflare Pages
         run: bun run pages:build
 
-      # --- NEW: Add a debug step to list files ---
-      - name: List build output directory
-        run: ls -la .vercel/output/static
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          # --- FIX: Use a more descriptive artifact name ---
-          name: pages-build-artifact
-          path: .vercel/output/static
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          # --- FIX: Use the matching new artifact name ---
-          name: pages-build-artifact
-          path: .vercel/output/static
-
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: wizdevtech-cms
-          directory: .vercel/output/static
+          # The command to deploy a Pages project from a directory
+          command: pages deploy .vercel/output --project-name=wizdevtech-cms
