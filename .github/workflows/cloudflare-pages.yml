@@ -28,15 +28,19 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # --- FIX: This is the only build step we need ---
       - name: Build for Cloudflare Pages
         run: bun run pages:build
+
+      # --- NEW: Add a debug step to list files ---
+      - name: List build output directory
+        run: ls -la .vercel/output/static
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: .next
-          path: .vercel/output/static # The output directory for next-on-pages
+          # --- FIX: Use a more descriptive artifact name ---
+          name: pages-build-artifact
+          path: .vercel/output/static
 
   deploy:
     needs: build
@@ -45,7 +49,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: .next
+          # --- FIX: Use the matching new artifact name ---
+          name: pages-build-artifact
           path: .vercel/output/static
 
       - name: Deploy to Cloudflare Pages
@@ -53,5 +58,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: wizdevtech-cms # The name of your project in Cloudflare
+          projectName: wizdevtech-cms
           directory: .vercel/output/static
