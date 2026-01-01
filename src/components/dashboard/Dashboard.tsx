@@ -21,7 +21,7 @@ import {
   Plus
 } from "lucide-react";
 import { ContentMetrics, EngagementMetrics, ContentPerformance } from "./Metrics";
-import { AnalyticsDashboard } from "./Analytics";
+import  Analytics  from "./Analytics";
 
 interface DashboardProps {
   user?: {
@@ -425,3 +425,4 @@ export function Dashboard({ user }: DashboardProps) {
     </div>
   );
 }
+export { Analytics as AnalyticsDashboard };
