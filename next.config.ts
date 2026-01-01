@@ -3,8 +3,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // This is the crucial change for static export to GitHub Pages
-  output: "export",
+  // --- IMPORTANT CHANGE ---
+  // We have REMOVED 'output: "export"'.
+  // The @cloudflare/next-on-pages adapter will handle the build process for Cloudflare.
+  // No special output configuration is needed here.
 
   // Keep your existing configurations
   typescript: {
