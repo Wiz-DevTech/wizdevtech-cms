@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
+export const dynamic = "force-dynamic";
 
 export default function SignInPage() {
   const router = useRouter()
