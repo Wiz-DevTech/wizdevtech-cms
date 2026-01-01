@@ -1,6 +1,7 @@
 # wrangler.toml
 name = "wizdevtech-cms"
 compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
 
-# This tells Cloudflare to treat API routes as Edge Functions, not static pages
+# Ensure the output directory matches your build command
 pages_build_output_dir = ".worker-next"
